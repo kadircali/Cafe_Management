@@ -1,6 +1,9 @@
 
 import java.awt.Image;
 import java.awt.print.PrinterException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
@@ -2083,13 +2086,27 @@ public class DashBoard extends javax.swing.JFrame {
     private void btn_receiptActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_receiptActionPerformed
         if (total != 0) {
 
+            String input = JOptionPane.showInputDialog("File Name: ");
+            String path = "C:\\Users\\MSI\\Desktop\\" + input + ".txt";
+            File file = new File(path);
+
             if (!btn_total.isEnabled()) {
                 try {
-                    txt_area.print();
-                } catch (PrinterException ex) {
-                    Logger.getLogger(DashBoard.class.getName()).log(Level.SEVERE, null, ex);
+
+                    if (!file.exists()) {
+                        file.createNewFile();
+                        FileWriter writer = new FileWriter(file);
+                        writer.write(txt_area.getText());
+                        writer.close();
+                    }
+                    else{
+                         JOptionPane.showMessageDialog(null, "Already exists");
+                    }
+
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(null, "Error"+ex.toString());
                 }
-            }else{
+            } else {
                 JOptionPane.showMessageDialog(null, "You haven't purchased any product");
             }
 
